@@ -8,40 +8,44 @@ class Mnemonic
       @metrics = []
     end
 
-    def add_metric(klass, args)
+    def add_metric(klass, args=nil)
       @metrics << MetricDescription.new(klass, args)
     end
 
-    def gc_stat(*names)
-      add_metric Metric::GCStat, names
+    def gc_stat(*stat_names)
+      add_metric Metric::GCStat, stat_names
     end
 
-    def objects_count(*names)
-      add_metric Metric::ObjectsCount, names
+    def objects_count(*object_types)
+      add_metric Metric::ObjectsCount, object_types
     end
 
-    def objects_size(*names)
-      add_metric Metric::ObjectsSize, names
+    def objects_size(*object_types)
+      add_metric Metric::ObjectsSize, object_types
     end
 
-    def instances_count(klass)
-      add_metric Metric::InstancesCount, klass
+    def instances_count(*target_klass_names)
+      target_klass_names.each do |klass_name|
+        add_metric Metric::InstancesCount, klass_name
+      end
     end
 
-    def instances_size(klass)
-      add_metric Metric::InstancesSize, klass
+    def instances_size(*target_klass_names)
+      target_klass_names.each do |klass_name|
+        add_metric Metric::InstancesSize, klass_name
+      end
     end
 
     def time_seconds
-      add_metric Metric::TimeSeconds, nil
+      add_metric Metric::TimeSeconds
     end
 
     def time_milliseconds
-      add_metric Metric::TimeMilliseconds, nil
+      add_metric Metric::TimeMilliseconds
     end
 
     def time
-      add_metric Metric::Time, nil
+      add_metric Metric::Time
     end
 
     def rss
@@ -52,7 +56,7 @@ class Mnemonic
               else
                 Metric::RSS::PS
               end
-      add_metric klass, nil
+      add_metric klass
     end
   end
 end
