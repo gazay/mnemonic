@@ -6,16 +6,14 @@ require 'mnemonic/version'
 Gem::Specification.new do |spec|
   spec.name          = "mnemonic"
   spec.version       = Mnemonic::VERSION
-  spec.authors       = ["Alexey Gaziev", "Vladimir Kochnev"]
-  spec.email         = ["alex.gaziev@gmail.com", "hashtable@yandex.ru"]
+  spec.authors       = ["Vladimir Kochnev", "Alexey Gaziev"]
+  spec.email         = ["hashtable@yandex.ru", "alex.gaziev@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{The best tool to find leakage}
+  spec.description   = %q{The best tool to find leakage}
+  spec.homepage      = "https://github.com/gazay/mnemonic"
 
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.10"
