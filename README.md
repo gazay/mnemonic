@@ -1,47 +1,47 @@
-# memory_logger
-Simple logger to show where is leaking by many-many puts
+# mnemonic - The best tool to find leakage
 
-Example of output:
-```
-ENTRY 4 :: [2015-09-18 16:59:25 +0800]: #<Social::Activity::Vkontakte:0x007fcc8c4bdcb8>, pub 2456056, finished
+If you know (or even just think) that your application is leaking, but you having hard times with figuring out
+what exactly is leaking, when and why – this tool will help you to figure this out.
 
-    STAT NAME          CURRENT diff:  PREVIOUS|     BEGIN
+<a href="https://evilmartians.com/?utm_source=gon">
+<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54">
+</a>
 
-  MAIN_STATS:
+## How it works
 
-    MEM:                796.82 diff:  +603.336|  +664.031 MB
-    OBJ_SIZE:           98.317 diff:    -8.583|    +10.76 MB
-    OBJ_CNT:           1662162 diff:         0|   +547796
+Сейчас у мнемоника есть два режима работы –
 
-  GC_STATS:
+1. Полуавтоматический, когда вы добавляете в нужных вам местах триггеры мнемоника.
+   В этом режиме мнемоник будет выводить или сохранять данные каждый раз, когда
+   будет выполняться код триггера.
 
-    GC (m/M):            435/76
-    OLD_OBJ:            413640 diff:    +11118|    +83427
-    HEAP_LIVE:          446362 diff:    -64913|     +2339
-    HEAP_AVLBL:         831081 diff:         0|   +273898
-    MALLOC_INC:          4.574                            MB
+2. Автоматический, когда вы проксируете ваш логгер через прокси мнемоника.
+   В этом режиме мнемоник будет выводить или сохранять данные каждый раз,
+   когда вызывается логгер.
 
-  OBJECTS:
+## Formats
 
-    FREE:               384651 diff:    +64912|   +271492
-    TOTAL:              831081 diff:         0|   +273898
+Мнемоник поддерживает три формата вывода данных:
 
-    T_CLASS:             12640 diff:       +14|     +2068
-    T_COMPLEX:               1 diff:         0|         0
-    T_RATIONAL:            889 diff:         0|     -2484
-    T_SYMBOL:             1701 diff:         0|      +548
-    T_ICLASS:             3972 diff:         0|     +1495
-    T_MODULE:             1969 diff:         0|      +313
-    T_FLOAT:                 9 diff:         0|         0
-    T_BIGNUM:               13 diff:         0|        -1
-    T_FILE:                 11 diff:        -1|      -117
-    T_REGEXP:             3660 diff:        -1|      +309
-    T_STRUCT:             1253 diff:        -4|      +480
-    T_MATCH:                15 diff:      -159|      -121
-    T_OBJECT:            22106 diff:     -1604|     +9016
-    T_NODE:              46644 diff:     -3173|    -25435
-    T_HASH:              14338 diff:     -6133|     +4642
-    T_DATA:              76145 diff:     -7288|    +18246
-    T_ARRAY:             74829 diff:    -17285|      +766
-    T_STRING:           186235 diff:    -29278|     -7319
-```
+1. Pretty - красиво отформаттированный текстовый вывод данных:
+скриншот
+
+2. JSON - данные представлены в виде JSON-массива, удобно для дальнейшего анализа при
+   помощи внешних инструментов
+пример формата
+
+3. CSV - данные представлены в формате CSV, можно воспользоваться любым инструментом
+   с поддержкой импорта из csv, таким как Google Sheets и тп.
+пример формата
+
+Если вам не хватает какого-либо формата – мы будем очень рады пулл реквесту или
+ишью с описанием недостающего формата.
+
+## What and how you can track with mnemonic
+
+Мы постарались добавить в этот инструмент все метрики, которые когда-либо
+помогали нам в расследовании наших утечек. Если мы упустили что-то важное - мы
+будем очень благодарны за пулл реквест или ишью с описанием метрики.
+
+На данный момент инструмент позволяет следить за следующими показателями:
+
