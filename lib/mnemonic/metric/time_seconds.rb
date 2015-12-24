@@ -12,7 +12,7 @@ class Mnemonic
       private
 
       def current_value
-        Time.now.to_i
+        ::Time.now.to_i
       end
     end
   end
