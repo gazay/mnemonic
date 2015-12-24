@@ -1,13 +1,13 @@
 require 'objspace'
 require 'monitor.rb'
 require 'set'
+require 'mnemonic/version'
+require 'mnemonic/config'
+require 'mnemonic/metric'
+require 'mnemonic/sink'
+require 'mnemonic/util'
 
 class Mnemonic
-  require 'mnemonic/version'
-  require 'mnemonic/config'
-  require 'mnemonic/metric'
-  require 'mnemonic/sink'
-  require 'mnemonic/util'
 
   include MonitorMixin
 
