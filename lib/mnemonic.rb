@@ -11,7 +11,7 @@ class Mnemonic
 
   include MonitorMixin
 
-  attr_reader :root_metrics, :metrics, :metric_names
+  attr_reader :root_metrics, :metrics, :metric_names, :enabled
 
   def initialize
     super
@@ -29,13 +29,23 @@ class Mnemonic
     @root_metrics.each(&:start!)
     @metric_names = @metrics.map(&:name)
     @sinks = Set.new
+    @enabled = true
   end
 
   def trigger!(extra = nil)
+    return unless enabled
     synchronize do
       @root_metrics.each(&:refresh!)
       @sinks.each { |s| s.drop!(extra) }
     end
+  end
+
+  def disable!
+    @enabled = false
+  end
+
+  def enable!
+    @enabled = true
   end
 
   def attach_csv(*args)
