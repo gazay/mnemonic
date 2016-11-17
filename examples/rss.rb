@@ -2,7 +2,7 @@ require 'mnemonic'
 
 mnemonic = Mnemonic.new do |config|
   config.rss
-  config.gc_stat :minor_gc_count, :major_gc_count
+  config.gc_stat
 end
 
 mnemonic.attach_pretty(STDOUT)

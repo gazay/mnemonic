@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mnemonic (0.1.0)
+    mnemonic (0.1.1)
 
 GEM
   remote: https://rubygems.org/

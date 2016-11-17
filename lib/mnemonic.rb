@@ -19,8 +19,12 @@ class Mnemonic
     yield config
 
     @root_metrics = config.metrics.map do |metric|
-      metric.klass.new(*metric.args)
-    end
+      begin
+        metric.klass.new(*metric.args)
+      rescue => e
+        puts e
+      end
+    end.compact
 
     @metrics = @root_metrics.flat_map do |metric|
       metric.to_enum(:each_submetric).to_a
