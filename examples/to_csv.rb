@@ -1,3 +1,5 @@
+require 'mnemonic'
+
 file_name = './tmp.csv'
 
 mnemonic = Mnemonic.new do |config|

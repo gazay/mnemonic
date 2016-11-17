@@ -1,3 +1,4 @@
+require 'mnemonic'
 class X
 end
 

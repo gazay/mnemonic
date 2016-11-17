@@ -1,3 +1,4 @@
+require 'mnemonic'
 require 'mnemonic/logger_proxy'
 
 file_name = './tmp.log'

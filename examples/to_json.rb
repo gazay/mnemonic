@@ -1,3 +1,5 @@
+require 'mnemonic'
+
 file_name = './tmp.json'
 
 mnemonic = Mnemonic.new do |config|

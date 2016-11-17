@@ -1,3 +1,4 @@
+require 'mnemonic'
 mnemonic = Mnemonic.new do |config|
   config.gc_stat :minor_gc_count, :major_gc_count
 end
