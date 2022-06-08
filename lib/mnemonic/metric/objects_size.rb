@@ -37,7 +37,6 @@ class Mnemonic
         :T_COMPLEX => :bytes,
         :T_RATIONAL => :bytes,
         :T_SYMBOL => :bytes,
-        :T_NODE => :bytes,
         :T_ICLASS => :bytes,
         :TOTAL => :bytes
       }
