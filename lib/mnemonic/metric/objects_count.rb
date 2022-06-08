@@ -39,7 +39,6 @@ class Mnemonic
         :T_COMPLEX => :number,
         :T_RATIONAL => :number,
         :T_SYMBOL => :number,
-        :T_NODE => :number,
         :T_ICLASS => :number
       }
       DEFAULT_KEYS = KIND_TABLE.keys

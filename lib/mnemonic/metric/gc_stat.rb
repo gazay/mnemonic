@@ -26,7 +26,6 @@ class Mnemonic
         :heap_free_slots => :number,
         :heap_final_slots => :number,
         :heap_marked_slots => :number,
-        :heap_swept_slots => :number,
         :heap_eden_pages => :number,
         :heap_tomb_pages => :number,
         :total_allocated_pages => :number,
