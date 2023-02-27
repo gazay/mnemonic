@@ -23,7 +23,7 @@ class Mnemonic
               else
                 to
               end
-        @csv = ::CSV.new(@io, options)
+        @csv = ::CSV.new(@io, **options)
         @row = Array.new(col_count)
       end
 
