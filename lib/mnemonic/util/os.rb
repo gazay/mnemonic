@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Util
     module OS
@@ -11,14 +13,10 @@ class Mnemonic
         def _get_type
           require 'rbconfig'
           case RbConfig::CONFIG['host_os']
-          when /linux/
-            :linux
-          when /darwin|mac os/
-            :macosx
-          when /solaris|bsd/
-            :unix
-          when /mswin|msys|mingw|cygwin|bccwin|wince|emc/
-            :windows
+          when /linux/ then :linux
+          when /darwin|mac os/ then :macosx
+          when /solaris|bsd/ then :unix
+          when /mswin|msys|mingw|cygwin|bccwin|wince|emc/ then :windows
           end
         end
       end

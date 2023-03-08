@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Util
     require 'mnemonic/util/os'

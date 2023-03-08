@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Sink
     class Pretty
-      def initialize(mnemonic, to = STDOUT)
+      def initialize(mnemonic, to = $stdout)
         @mnemonic = mnemonic
-        @io = if to.kind_of? String
+        @io = if to.is_a? String
                 @need_close = true
                 File.open(to, 'w')
               else
@@ -22,7 +24,7 @@ class Mnemonic
         @mnemonic.metrics.each do |metric|
           add format_metric(metric)
         end
-        add "#{format_name('Extra'.freeze)}#{extra}" unless extra.nil?
+        add "#{format_name('Extra')}#{extra}" unless extra.nil?
         add_break
       end
 
@@ -44,44 +46,52 @@ class Mnemonic
         "  METRIC #{' ' * (@max_name_length - 6)}   CURRENT#{' ' * 10} diff: PREVIOUS#{' ' * 10} | BEGIN"
       end
 
-      def format_metric(m)
-        fvalue = format_value(m.kind, m.value)
-        fdiff = format_value(m.kind, m.diff)
-        fdiff_start = format_value(m.kind, m.diff_from_start)
-        "#{format_name(m.name)}#{fvalue}#{' ' * (24 - fvalue.length)}#{fdiff}#{' ' * (21 - fdiff.length)}#{fdiff_start}"
+      # rubocop: disable Metrics/AbcSize
+      def format_metric(metric)
+        name = format_name(metric.name)
+        value = format_value(metric.kind, metric.value)
+        diff = format_value(metric.kind, metric.diff)
+        start = format_value(metric.kind, metric.diff_from_start)
+        "#{name}#{value}#{' ' * (24 - value.length)}#{diff}#{' ' * (21 - diff.length)}#{start}"
       end
+      # rubocop: enable Metrics/AbcSize
 
       def format_name(name)
         "  #{name}:   #{' ' * (@max_name_length - name.length)}"
       end
 
-      def format_value(k, v)
-        case k
-        when :bytes
-          postfix = :B
-          neg = v < 0
-          n = v.abs
-          if n >= 1024
-            n /= 1024.0
-            postfix = :KB
-          end
-          if n >= 1024
-            n /= 1024.0
-            postfix = :MB
-          end
-          n = n.round(3)
-          n = n.to_i if n == n.to_i
-          "#{'-' if neg}#{n} #{postfix}"
-        when :time
-          if v.is_a? Time
-            v.strftime('%Y%m%d%H%M%S')
-          elsif v.is_a? Float # diff
-            "#{v.round(3)} sec"
-          else
-            v.to_s
-          end
-        else
-          v.to_s
+      def format_value(key, val)
+        case key
+        when :bytes then format_bytes(val)
+        when :time then format_time(val)
+        else val.to_s
+        end
+      end
+
+      # rubocop: disable Metrics/MethodLength
+      def format_bytes(val)
+        postfix = :B
+        neg = val.negative?
+        n = val.abs
+        if n >= 1024
+          n /= 1024.0
+          postfix = :KB
+        end
+        if n >= 1024
+          n /= 1024.0
+          postfix = :MB
+        end
+        n = n.round(3)
+        n = n.to_i if n == n.to_i
+        "#{'-' if neg}#{n} #{postfix}"
+      end
+      # rubocop: enable Metrics/MethodLength
+
+      def format_time(val)
+        case val
+        when Time then val.strftime('%Y%m%d%H%M%S')
+        when Float then "#{val.round(3)} sec"
+        else val.to_s
         end
       end
     end

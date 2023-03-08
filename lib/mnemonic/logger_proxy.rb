@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'logger'
 require 'monitor'
 require 'forwardable'
@@ -6,11 +8,11 @@ class Mnemonic
   class LoggerProxy
     extend Forwardable
 
-    def initialize(logger, mnemonic = Mnemonic.new(&proc))
+    def initialize(logger, mnemonic = nil, &block)
       super()
       @monitor = Monitor.new
       @logger = logger
-      @mnemonic = mnemonic
+      @mnemonic = mnemonic || Mnemonic.new(&block)
       enable_mnemonic!
     end
 
@@ -32,21 +34,14 @@ class Mnemonic
     end
 
     def_delegators :@logger,
-      :level,
-      :level=,
-      :formatter,
-      :formatter=,
-      :datetime_format,
-      :datetime_format=
+                   :level,
+                   :level=,
+                   :formatter,
+                   :formatter=,
+                   :datetime_format,
+                   :datetime_format=
 
-    [
-      :debug,
-      :info,
-      :warn,
-      :error,
-      :fatal,
-      :unknown
-    ].each do |name|
+    %i[debug info warn error fatal unknown].each do |name|
       severity = Logger.const_get(name.to_s.upcase)
       define_method(name) do |progname = nil, &block|
         add(severity, nil, progname, &block)
@@ -61,7 +56,7 @@ class Mnemonic
         end
       end
     end
-    alias_method :log, :add
+    alias log add
 
     def <<(msg)
       @monitor.synchronize do
@@ -84,7 +79,7 @@ class Mnemonic
       end
     end
 
-    def respond_to?(method_name, include_private = false)
+    def respond_to_missing?(method_name, include_private = false)
       @logger.respond_to?(method_name) || super
     end
   end

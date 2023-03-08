@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Metric
     class HashMetric
@@ -9,6 +11,7 @@ class Mnemonic
           @key = key
           @name = "#{parent.name}(#{key.inspect})"
           @kind = kind
+          super()
         end
 
         private

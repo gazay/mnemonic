@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mnemonic'
 
 file_name = './tmp.json'
@@ -10,10 +12,10 @@ end
 mnemonic.attach_json(file_name)
 
 10.times do
-  {}; {[] => []}; [] # +3 arrays, +2 hashes
+  {}; { [] => [] }; [] # +3 arrays, +2 hashes
   mnemonic.trigger!
 end
 
 mnemonic.detach_all
 
-puts JSON.pretty_generate(JSON.load(File.read(file_name)))
+puts JSON.pretty_generate(JSON.parse(File.read(file_name)))

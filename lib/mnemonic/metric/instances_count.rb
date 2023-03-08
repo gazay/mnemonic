@@ -1,9 +1,12 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Metric
     class InstancesCount < Base
       def initialize(klass)
         @enum = ObjectSpace.each_object(klass)
         @name = "Count(#{klass.name || klass.inspect})"
+        super()
       end
 
       def kind
