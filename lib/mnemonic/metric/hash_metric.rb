@@ -24,9 +24,9 @@ class Mnemonic
       def initialize(*keys)
         @current_hash_value = {}
         kind_table = self.class.const_get(:KIND_TABLE)
-        @submetrics = keys.map do |key|
-          Submetric.new(self, key, kind_table[key])
-        end
+        keys &= kind_table.keys
+        keys = kind_table.keys if keys.empty?
+        @submetrics = keys.map { |key| Submetric.new(self, key, kind_table[key]) }
       end
 
       def start!

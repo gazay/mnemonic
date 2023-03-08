@@ -3,11 +3,6 @@
 class Mnemonic
   module Metric
     class GCStat < HashMetric
-      def initialize(*keys)
-        keys = DEFAULT_KEYS if keys.empty?
-        super
-      end
-
       def name
         'GCStat'
       end
@@ -45,7 +40,6 @@ class Mnemonic
         oldmalloc_increase_bytes: :number,
         oldmalloc_increase_bytes_limit: :number
       }.freeze
-      DEFAULT_KEYS = KIND_TABLE.keys
     end
   end
 end
