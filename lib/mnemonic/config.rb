@@ -10,31 +10,31 @@ class Mnemonic
       @metrics = []
     end
 
-    def add_metric(klass, args = nil)
+    def add_metric(klass, **args)
       @metrics << MetricDescription.new(klass, args)
     end
 
     def gc_stat(*stat_names)
-      add_metric Metric::GCStat, stat_names
+      add_metric Metric::GCStat, keys: stat_names
     end
 
     def objects_count(*object_types)
-      add_metric Metric::ObjectsCount, object_types
+      add_metric Metric::ObjectsCount, keys: object_types
     end
 
     def objects_size(*object_types)
-      add_metric Metric::ObjectsSize, object_types
+      add_metric Metric::ObjectsSize, keys: object_types
     end
 
     def instances_count(*target_klass_names)
       target_klass_names.each do |klass_name|
-        add_metric Metric::InstancesCount, klass_name
+        add_metric Metric::InstancesCount, klass: klass_name
       end
     end
 
     def instances_size(*target_klass_names)
       target_klass_names.each do |klass_name|
-        add_metric Metric::InstancesSize, klass_name
+        add_metric Metric::InstancesSize, klass: klass_name
       end
     end
 
@@ -53,11 +53,10 @@ class Mnemonic
     def rss
       # TODO: finish!
       klass = case Util::OS.type
-              when :linux
-                Metric::RSS::ProcFS
-              else
-                Metric::RSS::PS
+              when :linux then Metric::RSS::ProcFS
+              else Metric::RSS::PS
               end
+
       add_metric klass
     end
   end

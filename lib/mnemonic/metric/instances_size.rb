@@ -3,10 +3,10 @@
 class Mnemonic
   module Metric
     class InstancesSize < Base
-      def initialize(klass)
+      def initialize(klass:, **)
         @klass = klass
         @name = "Size(#{klass.name || klass.inspect})"
-        super()
+        super
       end
 
       def kind

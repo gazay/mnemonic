@@ -5,7 +5,7 @@ class Mnemonic
   module Metric
     class RSS
       class ProcFS < self
-        def initialize
+        def initialize(**)
           @io = File.open("/proc/#{$PROCESS_ID}/statm", 'r')
           super
         end

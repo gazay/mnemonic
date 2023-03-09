@@ -22,6 +22,8 @@ class Mnemonic
 
       private
 
+      def initialize(**); end
+
       def current_value
         raise NotImplementedError
       end
