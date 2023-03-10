@@ -31,7 +31,7 @@ class Mnemonic
       # rubocop: enable Metrics/AbcSize
 
       def drop!(extra)
-        @mnemonic.metrics.each_with_index { |metric, i| @row[i] = metric.value }
+        @mnemonic.metrics.each_with_index { |metric, i| @row[i] = metric.diff }
         @row[-1] = extra if @extra_column
         @csv << @row
       end
