@@ -13,7 +13,7 @@ class Mnemonic
         @prev_value = @value
         @value = current_value
         @diff = @value - @prev_value
-        @diff_from_start = @value - @start_value
+        @diff_from_start += @diff
       end
 
       def each_submetric
