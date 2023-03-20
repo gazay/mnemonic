@@ -3,10 +3,10 @@
 class Mnemonic
   module Metric
     class InstancesCount < Base
-      def initialize(klass)
+      def initialize(klass:, **)
         @enum = ObjectSpace.each_object(klass)
         @name = "Count(#{klass.name || klass.inspect})"
-        super()
+        super
       end
 
       def kind

@@ -23,7 +23,7 @@ class Mnemonic
     yield config
 
     @root_metrics = config.metrics.map do |metric|
-      metric.klass.new(*metric.args)
+      metric.klass.new(**metric.args)
     rescue StandardError => e
       puts e
     end.compact
