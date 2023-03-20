@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Sink
     require 'mnemonic/sink/csv'
@@ -5,4 +7,3 @@ class Mnemonic
     require 'mnemonic/sink/pretty'
   end
 end
-

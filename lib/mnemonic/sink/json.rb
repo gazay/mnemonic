@@ -1,39 +1,28 @@
+# frozen_string_literal: true
+
 require 'json'
 
 class Mnemonic
   module Sink
     class JSON
-      def initialize(mnemonic, to = STDOUT, options = {})
+      def initialize(mnemonic, to = $stdout, options = {})
         @mnemonic = mnemonic
-        @io = if to.kind_of? String
-                @need_close = true
-                File.open(to, 'w')
-              else
-                to
-              end
+        @need_close = to.is_a?(String)
+        @io = to.is_a?(String) ? File.open(to, 'w') : to
         @extra_enabled = options.delete(:extra)
         @row = {}
         @first = true
       end
 
       def drop!(extra)
-        @mnemonic.metrics.each do |metric|
-          @row[metric.name] = metric.value
-        end
-        @row['extra'.freeze] = extra if @extra_enabled
-        json_row = ::JSON.dump(@row)
-        if @first
-          @io << '['.freeze
-          @io << json_row
-          @first = false
-        else
-          @io << ','.freeze
-          @io << json_row
-        end
+        @mnemonic.metrics.each { |metric| @row[metric.name] = metric.value }
+        @row['extra'] = extra if @extra_enabled
+        @io << (@first ? '[' : ',') << ::JSON.dump(@row)
+        @first = false
       end
 
       def close
-        @io << ']'.freeze
+        @io << ']'
         @io.close if @need_close
       end
     end

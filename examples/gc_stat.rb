@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'mnemonic'
 mnemonic = Mnemonic.new do |config|
   config.gc_stat :minor_gc_count, :major_gc_count
 end
 
-mnemonic.attach_pretty(STDOUT)
+mnemonic.attach_pretty($stdout)
 
 # 5 major GCs!
 10.times do |i|

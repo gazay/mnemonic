@@ -1,14 +1,22 @@
+# frozen_string_literal: true
+
+require 'English'
 class Mnemonic
-  class Metric::RSS::ProcFS < Metric::RSS
-    def initialize
-      @io = File.open("/proc/#{$$}/statm", 'r')
-    end
+  module Metric
+    class RSS
+      class ProcFS < self
+        def initialize
+          @io = File.open("/proc/#{$PROCESS_ID}/statm", 'r')
+          super
+        end
 
-    private
+        private
 
-    def current_value
-      @io.seek(0)
-      @io.gets.split(/\s/)[1].to_i * Util::PageSize.value
+        def current_value
+          @io.seek(0)
+          @io.gets.split(/\s/)[1].to_i * Util::PageSize.value
+        end
+      end
     end
   end
 end
