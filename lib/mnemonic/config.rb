@@ -46,6 +46,10 @@ class Mnemonic
       add_metric Metric::TimeMilliseconds
     end
 
+    def time_microseconds
+      add_metric Metric::TimeMicroseconds
+    end
+
     def time
       add_metric Metric::Time
     end

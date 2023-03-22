@@ -15,7 +15,7 @@ class Mnemonic
       end
 
       def drop!(extra)
-        @mnemonic.metrics.each { |metric| @row[metric.name] = metric.value }
+        @mnemonic.metrics.each { |metric| @row[metric.name] = metric.diff }
         @row['extra'] = extra if @extra_enabled
         @io << (@first ? '[' : ',') << ::JSON.dump(@row)
         @first = false

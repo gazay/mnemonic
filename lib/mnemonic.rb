@@ -38,16 +38,32 @@ class Mnemonic
     @enabled = true
   end
   # rubocop: enable Metrics/AbcSize
-  # rubocop: enable Metrics/MethodLength
 
+  # rubocop: disable Metrics/PerceivedComplexity
+  # rubocop: disable Metrics/CyclomaticComplexity
   def trigger!(extra = nil)
     return unless enabled
 
-    synchronize do
-      @root_metrics.each(&:refresh!)
-      @sinks.each { |s| s.drop!(extra) }
+    if block_given?
+      synchronize do
+        GC.start
+        @root_metrics.each(&:update!)
+        yield
+      ensure
+        GC.start
+        @root_metrics.each(&:refresh!)
+        @sinks.each { |s| s.drop!(extra) }
+      end
+    else
+      synchronize do
+        @root_metrics.each(&:refresh!)
+        @sinks.each { |s| s.drop!(extra) }
+      end
     end
   end
+  # rubocop: enable Metrics/CyclomaticComplexity
+  # rubocop: enable Metrics/PerceivedComplexity
+  # rubocop: enable Metrics/MethodLength
 
   def disable!
     @enabled = false

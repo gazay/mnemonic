@@ -12,20 +12,19 @@ class Mnemonic
                 to
               end
         @max_name_length = (mnemonic.metric_names.map(&:length) << 6).max
+        @max_value_length = 24
         @entries = 0
       end
 
       def drop!(extra)
         @entries += 1
         add "ENTRY #{@entries}"
-        add_break
+        add divider
         add legend
-        add_break
-        @mnemonic.metrics.each do |metric|
-          add format_metric(metric)
-        end
-        add "#{format_name('Extra')}#{extra}" unless extra.nil?
-        add_break
+        add divider
+        @mnemonic.metrics.each { |metric| add format_metric(metric) }
+        add format_row('Extra', extra, '') unless extra.nil?
+        add divider
       end
 
       def close
@@ -42,22 +41,21 @@ class Mnemonic
         add ''
       end
 
+      def format_row(name, diff)
+        format(" %-#{@max_name_length}s | %-#{@max_value_length}s ", name, diff)
+      end
+
+      def divider
+        ('-' * (@max_name_length + 2)) << '+' << ('-' * (@max_value_length + 2))
+      end
+
       def legend
-        "  METRIC #{' ' * (@max_name_length - 6)}   CURRENT#{' ' * 10} diff: PREVIOUS#{' ' * 10} | BEGIN"
+        format_row('METRIC', 'DIFF')
       end
 
-      # rubocop: disable Metrics/AbcSize
       def format_metric(metric)
-        name = format_name(metric.name)
-        value = format_value(metric.kind, metric.value)
         diff = format_value(metric.kind, metric.diff)
-        start = format_value(metric.kind, metric.diff_from_start)
-        "#{name}#{value}#{' ' * (24 - value.length)}#{diff}#{' ' * (21 - diff.length)}#{start}"
-      end
-      # rubocop: enable Metrics/AbcSize
-
-      def format_name(name)
-        "  #{name}:   #{' ' * (@max_name_length - name.length)}"
+        format_row(metric.name, diff)
       end
 
       def format_value(key, val)

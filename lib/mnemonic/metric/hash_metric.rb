@@ -39,6 +39,11 @@ class Mnemonic
         @submetrics.each(&:refresh!)
       end
 
+      def update!
+        refresh_hash!
+        @submetrics.each(&:update!)
+      end
+
       def each_submetric(&block)
         @submetrics.each(&block)
       end

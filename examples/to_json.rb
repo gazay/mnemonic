@@ -5,7 +5,7 @@ require 'mnemonic'
 file_name = './tmp.json'
 
 mnemonic = Mnemonic.new do |config|
-  config.time_milliseconds
+  config.time_microseconds
   config.objects_count(:T_HASH, :T_ARRAY)
 end
 
