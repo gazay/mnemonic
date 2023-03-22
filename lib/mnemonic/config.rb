@@ -26,6 +26,12 @@ class Mnemonic
       add_metric Metric::ObjectsSize, keys: object_types
     end
 
+    # Track the memory size of a specific object
+    # @param object [Object] the object to track
+    def memsize_of(object)
+      add_metric Metric::ObjectMemsize, object: object
+    end
+
     def instances_count(*target_klass_names)
       target_klass_names.each do |klass_name|
         add_metric Metric::InstancesCount, klass: klass_name
