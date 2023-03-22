@@ -14,7 +14,7 @@ class Mnemonic
       private
 
       def current_value
-        (::Time.now.to_f * 1000000).to_i
+        (::Time.now.to_f * 1_000_000).to_i
       end
     end
   end

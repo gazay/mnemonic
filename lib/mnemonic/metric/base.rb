@@ -11,9 +11,13 @@ class Mnemonic
       end
 
       def refresh!
-        diff = current_value - @value
-        @value += diff
-        @diff += diff
+        prev = @value
+        @value = current_value
+        @diff += @value - prev
+      end
+
+      def update!
+        @value = current_value
       end
 
       def each_submetric

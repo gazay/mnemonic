@@ -53,12 +53,10 @@ class Mnemonic
         format_row('METRIC', 'DIFF')
       end
 
-      # rubocop: disable Metrics/AbcSize
       def format_metric(metric)
         diff = format_value(metric.kind, metric.diff)
         format_row(metric.name, diff)
       end
-      # rubocop: enable Metrics/AbcSize
 
       def format_value(key, val)
         case key
