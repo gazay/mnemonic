@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 require 'mnemonic'
-class X
-end
+class X; end
 
 mnemonic = Mnemonic.new do |config|
   config.time_milliseconds
@@ -8,7 +9,7 @@ mnemonic = Mnemonic.new do |config|
   config.instances_size(X)
 end
 
-mnemonic.attach_csv(STDOUT, extra: true)
+mnemonic.attach_csv($stdout, extra: true)
 
 10.times do
   X.new

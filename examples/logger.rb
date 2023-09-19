@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mnemonic'
 require 'mnemonic/logger_proxy'
 
@@ -10,7 +12,7 @@ logger = Mnemonic::LoggerProxy.new(Logger.new(file_name)) do |config|
 end
 
 10.times do
-  {}; {[] => []}; [] # +3 arrays, +2 hashes
+  {}; { [] => [] }; [] # +3 arrays, +2 hashes
   logger.info 'hello with logging enabled!'
 end
 
@@ -25,7 +27,5 @@ logger.enable_mnemonic!
 10.times do
   logger.info 'hello with logging re-enabled!'
 end
-
-
 
 puts File.read(file_name)

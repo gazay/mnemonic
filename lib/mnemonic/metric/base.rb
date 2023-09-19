@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Metric
     class Base
-      attr_reader :name
-      attr_reader :start_value, :prev_value, :value
-      attr_reader :diff, :diff_from_start
+      attr_reader :name, :start_value, :prev_value, :value, :diff, :diff_from_start
 
       def start!
         @start_value = @value = current_value

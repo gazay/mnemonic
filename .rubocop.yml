@@ -1,1 +1,21 @@
 inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+  SuggestExtensions: false
+
+Lint/EmptyClass:
+  Exclude:
+    - 'examples/**/*.rb'
+
+Lint/Void:
+  Enabled: false
+
+Style/Alias:
+  EnforcedStyle: prefer_alias_method
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Semicolon:
+  AllowAsExpressionSeparator: true

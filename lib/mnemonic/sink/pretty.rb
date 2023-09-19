@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Sink
     class Pretty
-      def initialize(mnemonic, to = STDOUT)
+      def initialize(mnemonic, to = $stdout)
         @mnemonic = mnemonic
-        @io = if to.kind_of? String
+        @io = if to.is_a? String
                 @need_close = true
                 File.open(to, 'w')
               else
@@ -22,7 +24,7 @@ class Mnemonic
         @mnemonic.metrics.each do |metric|
           add format_metric(metric)
         end
-        add "#{format_name('Extra'.freeze)}#{extra}" unless extra.nil?
+        add "#{format_name('Extra')}#{extra}" unless extra.nil?
         add_break
       end
 
@@ -44,23 +46,26 @@ class Mnemonic
         "  METRIC #{' ' * (@max_name_length - 6)}   CURRENT#{' ' * 10} diff: PREVIOUS#{' ' * 10} | BEGIN"
       end
 
-      def format_metric(m)
-        fvalue = format_value(m.kind, m.value)
-        fdiff = format_value(m.kind, m.diff)
-        fdiff_start = format_value(m.kind, m.diff_from_start)
-        "#{format_name(m.name)}#{fvalue}#{' ' * (24 - fvalue.length)}#{fdiff}#{' ' * (21 - fdiff.length)}#{fdiff_start}"
+      def format_metric(metric)
+        format(
+          '%<metric>s%<value>-24s%<diff>-21s%<total_diff>s',
+          metric: format_name(metric.name),
+          value: format_value(metric.kind, metric.value),
+          diff: format_value(metric.kind, metric.diff),
+          total_diff: format_value(metric.kind, metric.diff_from_start)
+        )
       end
 
       def format_name(name)
         "  #{name}:   #{' ' * (@max_name_length - name.length)}"
       end
 
-      def format_value(k, v)
-        case k
+      def format_value(key, value)
+        case key
         when :bytes
           postfix = :B
-          neg = v < 0
-          n = v.abs
+          neg = value.negative?
+          n = value.abs
           if n >= 1024
             n /= 1024.0
             postfix = :KB
@@ -73,15 +78,15 @@ class Mnemonic
           n = n.to_i if n == n.to_i
           "#{'-' if neg}#{n} #{postfix}"
         when :time
-          if v.is_a? Time
-            v.strftime('%Y%m%d%H%M%S')
-          elsif v.is_a? Float # diff
-            "#{v.round(3)} sec"
+          if value.is_a? Time
+            value.strftime('%Y%m%d%H%M%S')
+          elsif value.is_a? Float # diff
+            "#{value.round(3)} sec"
           else
-            v.to_s
+            value.to_s
           end
         else
-          v.to_s
+          value.to_s
         end
       end
     end

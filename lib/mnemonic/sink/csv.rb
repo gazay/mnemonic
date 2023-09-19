@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 require 'csv'
 
 class Mnemonic
   module Sink
     class CSV
-      def initialize(mnemonic, to = STDOUT, options = {})
+      def initialize(mnemonic, to = $stdout, options = {})
         @mnemonic = mnemonic
 
         col_count = mnemonic.metrics.length
@@ -12,12 +14,12 @@ class Mnemonic
         @extra_column = options.delete(:extra)
         if @extra_column
           col_count += 1
-          headers = headers.dup << 'Extra'.freeze
+          headers = headers.dup << 'Extra'
         end
 
         options[:headers] = headers
         options[:write_headers] = true
-        @io = if to.kind_of? String
+        @io = if to.is_a? String
                 @need_close = true
                 File.open(to, 'w')
               else
