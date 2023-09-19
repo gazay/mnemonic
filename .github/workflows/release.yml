@@ -1,0 +1,32 @@
+name: Publish the release on Rubygems
+on:
+  release:
+    types:
+      - created
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+jobs:
+  publish:
+    name: Publish the gem on Rubygems
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RUBYGEMS_API_KEY != '' }}
+    steps:
+      - name: Checkout the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.0.2
+          bundler-cache: true
+
+      - name: Build the gem
+        run: gem build *.gemspec
+
+      - name: Publish the gem
+        run: gem push *.gem
+        env:
+            RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
