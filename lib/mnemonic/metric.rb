@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mnemonic/metric/base'
 require 'mnemonic/metric/hash_metric'
 require 'mnemonic/metric/rss'

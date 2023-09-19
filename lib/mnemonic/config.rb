@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   class Config
     MetricDescription = Struct.new(:klass, :args)
@@ -8,7 +10,7 @@ class Mnemonic
       @metrics = []
     end
 
-    def add_metric(klass, args=nil)
+    def add_metric(klass, args = nil)
       @metrics << MetricDescription.new(klass, args)
     end
 

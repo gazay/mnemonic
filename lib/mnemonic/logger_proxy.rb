@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'logger'
 require 'monitor'
 require 'forwardable'
@@ -32,21 +34,14 @@ class Mnemonic
     end
 
     def_delegators :@logger,
-      :level,
-      :level=,
-      :formatter,
-      :formatter=,
-      :datetime_format,
-      :datetime_format=
+                   :level,
+                   :level=,
+                   :formatter,
+                   :formatter=,
+                   :datetime_format,
+                   :datetime_format=
 
-    [
-      :debug,
-      :info,
-      :warn,
-      :error,
-      :fatal,
-      :unknown
-    ].each do |name|
+    %i[debug info warn error fatal unknown].each do |name|
       severity = Logger.const_get(name.to_s.upcase)
       define_method(name) do |progname = nil, &block|
         add(severity, nil, progname, &block)
@@ -76,15 +71,19 @@ class Mnemonic
       end
     end
 
-    def method_missing(method_name, *args, &block)
+    def respond_to_missing?(method_name, _)
+      @logger.respond_to?(method_name)
+    end
+
+    def method_missing(method_name, ...)
       if @logger.respond_to? method_name
-        @logger.send(method_name, *args, &block)
+        @logger.send(method_name, ...)
       else
         super
       end
     end
 
-    def respond_to?(method_name, include_private = false)
+    def respond_to?(method_name, _)
       @logger.respond_to?(method_name) || super
     end
   end

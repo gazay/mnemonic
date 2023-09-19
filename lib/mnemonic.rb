@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 require 'objspace'
-require 'monitor.rb'
+require 'monitor'
 require 'set'
 require 'mnemonic/version'
 require 'mnemonic/config'
@@ -8,7 +10,6 @@ require 'mnemonic/sink'
 require 'mnemonic/util'
 
 class Mnemonic
-
   include MonitorMixin
 
   attr_reader :root_metrics, :metrics, :metric_names, :enabled
@@ -19,11 +20,9 @@ class Mnemonic
     yield config
 
     @root_metrics = config.metrics.map do |metric|
-      begin
-        metric.klass.new(*metric.args)
-      rescue => e
-        puts e
-      end
+      metric.klass.new(*metric.args)
+    rescue StandardError => e
+      puts e
     end.compact
 
     @metrics = @root_metrics.flat_map do |metric|
@@ -38,6 +37,7 @@ class Mnemonic
 
   def trigger!(extra = nil)
     return unless enabled
+
     synchronize do
       @root_metrics.each(&:refresh!)
       @sinks.each { |s| s.drop!(extra) }
@@ -64,9 +64,9 @@ class Mnemonic
     attach(Sink::Pretty, *args)
   end
 
-  def attach(sink_class, *args, &block)
+  def attach(sink_class, ...)
     synchronize do
-      sink_class.new(self, *args, &block).tap do |sink|
+      sink_class.new(self, ...).tap do |sink|
         @sinks << sink
       end
     end

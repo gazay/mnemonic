@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Metric
     class RSS < Base
@@ -5,7 +7,7 @@ class Mnemonic
       require 'mnemonic/metric/rss/proc_fs'
 
       def name
-        'RSS'.freeze
+        'RSS'
       end
 
       def kind

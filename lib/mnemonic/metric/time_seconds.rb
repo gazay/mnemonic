@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Metric
     class TimeSeconds < Base
       def name
-        'Time(s)'.freeze
+        'Time(s)'
       end
 
       def kind

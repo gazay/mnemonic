@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Mnemonic
   module Util
     module PageSize
@@ -14,7 +16,11 @@ class Mnemonic
             -> { `getconf PAGE_SIZE`.to_i },
             -> { 0x1000 }
           ].each do |strategy|
-            page_size = strategy.call rescue next
+            page_size = begin
+              strategy.call
+            rescue StandardError
+              next
+            end
             return page_size
           end
         end

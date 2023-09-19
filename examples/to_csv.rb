@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'mnemonic'
 
 file_name = './tmp.csv'
@@ -11,7 +13,6 @@ end
 mnemonic.attach_csv(file_name)
 
 100.times do
-  Hash.new
   mnemonic.trigger!
 end
 
@@ -20,7 +21,7 @@ mnemonic.detach_all
 puts File.read(file_name)
 
 puts
-puts "WITH EXTRA COLUMN"
+puts 'WITH EXTRA COLUMN'
 puts
 
 mnemonic = Mnemonic.new do |config|
@@ -32,8 +33,7 @@ end
 mnemonic.attach_csv(file_name, extra: true)
 
 100.times do |i|
-  Hash.new
-  mnemonic.trigger!(2 ** i)
+  mnemonic.trigger!(2**i)
 end
 
 mnemonic.detach_all
