@@ -30,7 +30,7 @@ jobs:
         run: gem install rubocop --no-doc
 
       - name: Run linter
-        run: bundle exec rubocop
+        run: rubocop
 
   tests:
     name: Run tests (Ruby ${{ matrix.ruby-version }})
